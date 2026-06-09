@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lembretes de Aniversário</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Lembretes de Aniversário 🎂</h1>
+
+<form id="formCadastro">
+  <label for="nome">Nome:</label>
+  <input type="text" id="nome" name="nome" placeholder="Digite o nome" required aria-label="Nome da pessoa">
+
+  <label for="dataNascimento">Data de Nascimento:</label>
+  <input type="date" id="dataNascimento" name="dataNascimento" required aria-label="Data de nascimento">
+
+  <label for="grupo">Grupo:</label>
+  <select id="grupo" name="grupo" required aria-label="Selecione o grupo">
+    <option value="1">Grupo 1 (aniversário + presente)</option>
+    <option value="2">Grupo 2 (apenas aniversário)</option>
+  </select>
+
+  <label for="presente">Presente:</label>
+  <input type="text" id="presente" name="presente" placeholder="Digite o presente (opcional)" aria-label="Presente sugerido">
+
+  <button type="submit">Cadastrar</button>
+</form>
+
+  <h2>Lista de Pessoas</h2>
+  <ul id="lista"></ul>
+
+  <script src="script.js"></script>
+</body>
+</html>
