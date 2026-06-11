@@ -1,0 +1,21 @@
+{
+  "name": "aniversariantes",
+  "version": "1.0.0",
+  "description": "aplicação para lembrar as datas de aniversários",
+  "main": "script.js",
+  "scripts": {
+    "start": "serve -p 5000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedrojolig/aniversariantes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pedrojolig/aniversariantes/issues"
+  },
+  "homepage": "https://github.com/pedrojolig/aniversariantes#readme",
+  "dependencies": {}
+}

@@ -6,12 +6,17 @@ body {
 }
 
 form {
-  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 input, select, button {
   margin: 5px;
   padding: 8px;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 
 ul {
@@ -23,4 +28,10 @@ li {
   margin: 5px;
   padding: 10px;
   border-radius: 5px;
+}
+
+#mensagem {
+  margin: 10px 0;
+  font-weight: bold;
+  color: green;
 }
