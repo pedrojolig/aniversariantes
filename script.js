@@ -36,13 +36,11 @@ form.addEventListener("submit", async (e) => {
   form.reset();
   botao.disabled = true;
 
-  // Mensagem acessível
   mensagem.textContent = `Cadastro de ${pessoa.Nome} realizado com sucesso!`;
 
-  // Após 5 segundos, foco volta para o topo e mensagem desaparece
   setTimeout(() => {
-    topo.focus();       // move foco para o topo
-    mensagem.textContent = ""; // limpa a mensagem da tela
+    topo.focus();
+    mensagem.textContent = "";
   }, 5000);
 });
 
@@ -61,12 +59,58 @@ async function carregarLista() {
       const li = document.createElement("li");
       li.textContent = `${p.Nome} - ${formatarDataISO(p.DataNascimento)} (Grupo ${p.Grupo})`;
 
+      // Botão Editar com acessibilidade
+      const btnEditar = document.createElement("button");
+      btnEditar.textContent = "Editar";
+      btnEditar.setAttribute("aria-label", `Editar cadastro de ${p.Nome}`);
+      btnEditar.onclick = async () => {
+        const novoNome = prompt("Novo nome:", p.Nome);
+        if (novoNome) {
+          await fetch(`${API_URL}/${p.Id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ Nome: novoNome })
+          });
+          mensagem.textContent = `Cadastro de ${p.Nome} atualizado com sucesso!`;
+          await carregarLista();
+          setTimeout(() => mensagem.textContent = "", 5000);
+        }
+      };
+      li.appendChild(btnEditar);
+
+      // Botão Excluir com acessibilidade e tratamento de mensagens
+      const btnExcluir = document.createElement("button");
+      btnExcluir.textContent = "Excluir";
+      btnExcluir.setAttribute("aria-label", `Excluir cadastro de ${p.Nome}`);
+      btnExcluir.onclick = async () => {
+        if (confirm(`Deseja excluir ${p.Nome}?`)) {
+          try {
+            const res = await fetch(`${API_URL}/${p.Id}`, { method: "DELETE" });
+            if (res.ok) {
+              mensagem.textContent = `Cadastro de ${p.Nome} excluído com sucesso!`;
+              await carregarLista();
+            } else if (res.status === 404) {
+              mensagem.textContent = `Pessoa ${p.Nome} não encontrada no banco.`;
+            } else {
+              mensagem.textContent = `Erro ao excluir ${p.Nome}. Código: ${res.status}`;
+            }
+          } catch (err) {
+            mensagem.textContent = `Erro de rede ao excluir ${p.Nome}.`;
+            console.error(err);
+          }
+          setTimeout(() => mensagem.textContent = "", 5000);
+        }
+      };
+      li.appendChild(btnExcluir);
+
       if (p.MensagemEnviada) {
         const btn = document.createElement("button");
         btn.textContent = `OK - ${p.Nome}`;
+        btn.setAttribute("aria-label", `Confirmar lembrete de ${p.Nome}`);
         btn.onclick = async () => {
           await fetch(`${API_URL}/confirmar/${p.Id}`, { method: "PUT" });
-          alert(`Lembrete de ${p.Nome} confirmado!`);
+          mensagem.textContent = `Lembrete de ${p.Nome} confirmado!`;
+          setTimeout(() => mensagem.textContent = "", 5000);
         };
         li.appendChild(btn);
       }
@@ -75,6 +119,8 @@ async function carregarLista() {
     });
   } catch (err) {
     console.error("Erro ao carregar lista:", err);
+    mensagem.textContent = "Erro ao carregar lista de pessoas.";
+    setTimeout(() => mensagem.textContent = "", 5000);
   }
 }
 
